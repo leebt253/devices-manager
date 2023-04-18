@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <!-- Sidebar Start -->
+    <ul th:fragment="sidebar" class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin}"
+            style="background-color: #fff">
+            <div class="sidebar-brand-icon">
+                <img th:src="@{/img/logo/logo.png}" style="width: 70%" />
+            </div>
+            <div class="sidebar-brand-text font-bold text-primary" style="font-size: 1.2rem">POSCO ICT</div>
+        </a>
+        <hr class="sidebar-divider my-0" />
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin}">
+                <i class="fas fa-fw fa-tachometer-alt"></i> <span class="font-weight-bold">Dashboard</span>
+            </a></li>
+        <hr class="sidebar-divider" />
+        <div class="sidebar-heading">Features</div>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-user"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-desktop"></i>
+                <span>Devices</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider" />
+        <div class="sidebar-heading">Reports</div>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-list-alt"></i>
+                <span>History</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider" />
+        <div class="sidebar-heading">Settings</div>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-cog"></i>
+                <span>Setting</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider" />
+        <div class="version" id="dashboard-version"></div>
+    </ul>
+    <!-- Sidebar End -->
+</body>
+
+</html>
