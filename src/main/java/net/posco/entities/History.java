@@ -9,32 +9,32 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id")
-    private Device device;
+    @Column(nullable = true)
+    private Integer inQuantity;
 
     @Column(nullable = true)
-    private Integer in;
-
-    @Column(nullable = true)
-    private Integer out;
+    private Integer outQuantity;
 
     @Column(length = 32, nullable = false)
     private String date;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    
+    @ManyToOne
+    @JoinColumn(name = "device_id")
+    private Device device;
 
     public History() {
 
     }
 
-    public History(User user, Device device, Integer in, Integer out, String date) {
+    public History(User user, Device device, Integer inQuantity, Integer outQuantity, String date) {
         this.user = user;
         this.device = device;
-        this.in = in;
-        this.out = out;
+        this.inQuantity = inQuantity;
+        this.outQuantity = outQuantity;
         this.date = date;
     }
 
@@ -62,20 +62,20 @@ public class History {
         this.device = device;
     }
 
-    public Integer getIn() {
-        return in;
+    public Integer getInQuantity() {
+        return inQuantity;
     }
 
-    public void setIn(Integer in) {
-        this.in = in;
+    public void setInQuantity(Integer inQuantity) {
+        this.inQuantity = inQuantity;
     }
 
-    public Integer getOut() {
-        return out;
+    public Integer getOutQuantity() {
+        return outQuantity;
     }
 
-    public void setOut(Integer out) {
-        this.out = out;
+    public void setOutQuantity(Integer outQuantity) {
+        this.outQuantity = outQuantity;
     }
 
     public String getDate() {

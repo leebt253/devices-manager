@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
+    <title>[[#{users}]]</title>
+    <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/admin.bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/admin.css}" rel="stylesheet" />
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar Start -->
+        <ul th:replace="~{sidebar :: sidebar}">
+        </ul>
+        <!-- Sidebar End -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar Start -->
+                <nav th:replace="~{topbar :: topbar}">
+                </nav>
+                <!-- Topbar End -->
+
+                <!-- Container Fluid Start -->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./" style="font-size: 16px">[[#{home}]]</a></li>
+                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">[[#{users}]]
+                        </ol>
+                    </div>
+
+                    <!-- Datatables Start -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">[[#{users.manage}]]</h6>
+                                </div>
+                                <div class="table-responsive p-3" style="margin-top: -1.25rem">
+                                    <form>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Datatables End -->
+                </div>
+                <!-- Container Fluid End -->
+            </div>
+            <!-- Footer Start -->
+            <footer th:replace="~{footer :: footer}"> </footer>
+            <!-- Footer End -->
+        </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i> </a>
+
+    <script th:src="@{/vendor/jquery/jquery.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+
+</html>

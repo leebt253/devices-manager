@@ -8,45 +8,45 @@
 <body>
     <!-- Sidebar Start -->
     <ul th:fragment="sidebar" class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin}"
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}"
             style="background-color: #fff">
             <div class="sidebar-brand-icon">
-                <img th:src="@{/img/logo/logo.png}" style="width: 70%" />
+                <img th:src="@{/img/logo/logo.png}" style="width: 60%" />
             </div>
-            <div class="sidebar-brand-text font-bold text-primary" style="font-size: 1.2rem">POSCO ICT</div>
+            <div class="sidebar-brand-text font-bold text-primary" style="font-size: 1rem">POSCO ICT</div>
         </a>
         <hr class="sidebar-divider my-0" />
-        <li class="nav-item"><a class="nav-link" th:href="@{/admin}">
-                <i class="fas fa-fw fa-tachometer-alt"></i> <span class="font-weight-bold">Dashboard</span>
+        <li class="nav-item"><a class="nav-link" th:href="@{/}">
+                <i class="fas fa-fw fa-tachometer-alt"></i> <span class="font-weight-bold">[[#{dashboard}]]</span>
             </a></li>
         <hr class="sidebar-divider" />
-        <div class="sidebar-heading">Features</div>
-        <li class="nav-item">
+        <div class="sidebar-heading">[[#{features}]]</div>
+        <li th:class="${#strings.equals(pageTitle,'users')} ? 'nav-item active' : 'nav-item'">
             <a class="nav-link" href="#">
                 <i class="fas fa-user"></i>
-                <span>Users</span>
+                <span>[[#{users}]]</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="fas fa-desktop"></i>
-                <span>Devices</span>
+                <i class="fas fa-plug"></i>
+                <span>[[#{devices}]]</span>
             </a>
         </li>
         <hr class="sidebar-divider" />
-        <div class="sidebar-heading">Reports</div>
+        <div class="sidebar-heading">[[#{reports}]]</div>
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="fas fa-list-alt"></i>
-                <span>History</span>
+                <span>[[#{history}]]</span>
             </a>
         </li>
         <hr class="sidebar-divider" />
-        <div class="sidebar-heading">Settings</div>
+        <div class="sidebar-heading">[[#{others}]]</div>
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="fas fa-cog"></i>
-                <span>Setting</span>
+                <span>[[#{settings}]]</span>
             </a>
         </li>
         <hr class="sidebar-divider" />

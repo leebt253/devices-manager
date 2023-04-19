@@ -1,5 +1,7 @@
 package net.posco.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -38,6 +40,9 @@ public class Device {
 
     @Column(length = 255, nullable = false)
     private String remark;
+
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    private List<History> histories;
 
     public Device() {
 
@@ -143,4 +148,13 @@ public class Device {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+
 }

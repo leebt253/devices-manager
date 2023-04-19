@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
-    <title>Device Manager - Dashboard</title>
+    <title>[[#{dashboard}]]</title>
     <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/admin.bootstrap.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
@@ -31,10 +31,9 @@
                 <!-- Container Fluid Start -->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./" style="font-size: 14px">Home</a></li>
-                            <li class="breadcrumb-item active" style="font-size: 14px" aria-current="page">Dashboard
+                            <li class="breadcrumb-item"><a href="./" style="font-size: 16px">[[#{home}]]</a></li>
+                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">[[#{dashboard}]]
                             </li>
                         </ol>
                     </div>
@@ -151,8 +150,7 @@
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Contents</h6>
                                 </div>
-                                <div class="table-responsive p-3" style="margin-top: -1.25rem">
-
+                                <div class="table-responsive p-3" style="margin-top: -1.25rem">                                    
                                 </div>
                             </div>
                         </div>

@@ -14,13 +14,38 @@ import org.springframework.test.annotation.Rollback;
 @Rollback(false)
 public class UserRepositoryTest {
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Test
-    public void testCreateUserWithOneRole() {
-        User userAdmin = new User("trunglb", "Trung1234", "admin");
-        User saveUser = userRepo.save(userAdmin);
+    public void testCreateUser() {
+        User user = new User(
+                "lebao.trung@posco.net",
+                "Trung",
+                "Le Bao",
+                "Trung1234",
+                "Admin",
+                true);
+        User saveUser = userRepository.save(user);
         assertThat(saveUser.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testUpdateUser() {
+        User user = userRepository.findById(1).get();
+        user.setEmail("lebao.trung@posco.net");
+        userRepository.save(user);
+    }
+
+    @Test
+    public void testDeleteUser() {
+        User user = userRepository.findById(2).get();
+        userRepository.delete(user);
+    }
+
+    @Test
+    public void testListAllUser() {
+        Iterable<User> listUsers = userRepository.findAll();
+        listUsers.forEach(user -> System.out.println(user));
     }
 
 }

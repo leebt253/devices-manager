@@ -1,5 +1,7 @@
 package net.posco.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,15 +10,41 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    
     @Column(length = 128, nullable = false, unique = true)
-    private String username;
+    private String email;
 
+    @Column(length = 128, nullable = false)
+    private String firstName;
+
+    @Column(length = 128,nullable = false)
+    private String lastName;
+    
     @Column(length = 64, nullable = false)
     private String password;
-
-    @Column(length = 20, nullable = false)
+    
+    @Column(length = 10, nullable = false)
     private String role;
+    
+    @Column(length = 255, nullable = true)
+    private String picture;
+
+    private boolean enabled;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<History> histories;
+
+    public User () { 
+    }
+
+    public User(String email, String firstName, String lastName, String password, String role, boolean enabled) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
+    }
 
     public Integer getId() {
         return id;
@@ -26,12 +54,28 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -50,13 +94,28 @@ public class User {
         this.role = role;
     }
 
-    public User() {
-
+    public String getPicture() {
+        return picture;
     }
 
-    public User(String username, String password, String role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+    
 }
