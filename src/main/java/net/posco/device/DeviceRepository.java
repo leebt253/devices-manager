@@ -1,6 +1,5 @@
-package net.posco.repositories;
+package net.posco.device;
 
-import net.posco.entities.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DeviceRepository extends JpaRepository<Device, Integer> {

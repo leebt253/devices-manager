@@ -1,4 +1,4 @@
-package net.posco.configs;
+package net.posco.config;
 
 import java.util.Locale;
 

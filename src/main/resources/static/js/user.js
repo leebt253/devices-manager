@@ -1,3 +1,27 @@
+window.setTimeout(function () {
+    $(".alert").fadeTo(500, 0).slideUp(500, function () {
+        $(this).remove();
+    });
+}, 4000);
+
+$(document).ready(function () {
+    $(".link-delete").on("click", function (e) {
+        e.preventDefault();
+        link = $(this);
+        userId = link.attr("userId");
+        userName = link.attr("userName");
+        $("#btnConfirm").attr("href", link.attr("href"));
+        $("#confirmText").text("Are you sure you want to delete " + userName + " (User ID: " + userId + ") ?");
+        $("#confirmModal").modal();
+    });
+});
+
+function setPageSize() {
+    num = $("#selectPageSize").val();
+    document.getElementById('pageSize').value = num;
+    document.getElementById('frmPageSize').submit();
+};
+
 $(document).ready(function () {
     $('#fileImage').change(function () {
         fileSize = this.files[0].size;
@@ -21,30 +45,29 @@ function showImageThumbnail(fileInput) {
 
 function validateForm(form) {
     id = $("#id").val();
-    email = $("#email").val();
     firstName = $("#firstName").val();
     lastName = $("#lastName").val();
-    phone = $("#phone").val();
+    email = $("#email").val();
     password = $("#password").val();
-    passwordConfirm = $("#confirmPassword").val();
+    // passwordConfirm = $("#confirmPassword").val();
     csrfValue = $("input[name='_csrf']").val();
-    url = "/admin/users/check_email";
+    url = "/posco/users/check_email"; // The word 'posco' in url is depended on the server.servlet.context-path at application.properties
     params = { id: id, email: email, _csrf: csrfValue };
     error = "";
     error += validateFirstName(firstName);
     error += validateLastName(lastName);
     error += validateEmail(email);
-    error += validatePhone(phone);
     error += validatePassword(id, password);
-    error += validatePasswordMatch(password, passwordConfirm);
-
+    // error += validatePasswordMatch(password, passwordConfirm);
     if (error === "") {
         $.post(url, params, function (response) {
-            if (response === "Email OK")
+            if (response === "Email OK") {
                 form.submit();
-            else if (response === "Email is existed")
+            }
+            else if (response === "Email is existed") {
                 document.getElementById("emailHelp").innerHTML
                     = existedEmailMsg;
+            }
             else
                 alert("Unkown error!!!");
         });
@@ -89,20 +112,9 @@ function validateEmail(email) {
     }
 };
 
-function validatePhone(phone) {
-    if (phone == "") {
-        document.getElementById("phoneHelp").innerHTML = phoneMsg;
-        return "Invalid phone";
-    }
-    else {
-        document.getElementById("phoneHelp").innerHTML = "";
-        return "";
-    }
-};
-
 function validatePassword(id, password) {
     pattern = /(?=^.{6,20}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-    if (id != null) {
+    if (id != "") {
         if (password.length > 0) {
             if (!pattern.test(password)) {
                 document.getElementById("passwordHelp").innerHTML = passwordMsg;
@@ -117,12 +129,8 @@ function validatePassword(id, password) {
             return "";
         }
     }
-    else {
-        if (password == "") {			
-            document.getElementById("passwordHelp").innerHTML = passwordMsg;
-            return "Invalid password";
-        }
-        else if (!pattern.test(password)) {
+    else if (id == "") {     
+        if (!pattern.test(password)) {
             document.getElementById("passwordHelp").innerHTML = passwordMsg;
             return "Invalid password";
         }
@@ -133,24 +141,13 @@ function validatePassword(id, password) {
     }
 };
 
-function validatePasswordMatch(password, passwordConfirm) {
-    if (password != passwordConfirm) {
-        document.getElementById("confirmPasswordHelp").innerHTML = passwordMatchMsg;
-        return "Invalid password";
-    }
-    else {
-        document.getElementById("confirmPasswordHelp").innerHTML = "";
-        return "";
-    }
-};
-
-function validateRoles(roles) {
-    if (password != passwordConfirm) {
-        document.getElementById("confirmPasswordHelp").innerHTML = passwordMatchMsg;
-        return "Invalid password";
-    }
-    else {
-        document.getElementById("confirmPasswordHelp").innerHTML = "";
-        return "";
-    }
-};
+// function validatePasswordMatch(password, passwordConfirm) {
+//     if (password != passwordConfirm) {
+//         document.getElementById("confirmPasswordHelp").innerHTML = passwordMatchMsg;
+//         return "Invalid password";
+//     }
+//     else {
+//         document.getElementById("confirmPasswordHelp").innerHTML = "";
+//         return "";
+//     }
+// };

@@ -1,4 +1,4 @@
-package net.posco.configs;
+package net.posco.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +17,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/upload/picture/devices/**").permitAll()
                         .requestMatchers("/**").permitAll()
-                        .anyRequest().denyAll()
-                );
+                        .anyRequest().denyAll());
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

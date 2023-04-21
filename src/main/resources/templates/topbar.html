@@ -23,14 +23,14 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="languageDropdown">
-                        <a class="dropdown-item cookier" th:href="@{?lang=en}"> 
+                        <a class="dropdown-item cookier" th:href="@{'?lang=en&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}"> 
                             <img th:src="@{/img/flags/us.png}" style="padding-right: 2px;">
                             <span class="py-2">[[#{lang.eng}]]
                                 <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700" 
                                     th:if="${#locale.language == 'en'}"></i>
                             </span>
                         </a>
-                        <a class="dropdown-item cookier" th:href="@{?lang=vi}"> 
+                        <a class="dropdown-item cookier" th:href="@{'?lang=vi&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}"> 
                             <img th:src="@{/img/flags/vi.png}" style="padding-right: 2px;">
                             <span class="py-2">[[#{lang.vie}]]
                                 <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700" 

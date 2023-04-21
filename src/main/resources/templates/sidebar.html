@@ -21,8 +21,10 @@
             </a></li>
         <hr class="sidebar-divider" />
         <div class="sidebar-heading">[[#{features}]]</div>
-        <li th:class="${#strings.equals(pageTitle,'users')} ? 'nav-item active' : 'nav-item'">
-            <a class="nav-link" href="#">
+        <li th:class="${#strings.equals(pageTitle,'users') 
+                        OR #strings.equals(pageTitle,'Add new user') 
+                        OR #strings.equals(pageTitle,'Edit user')} ? 'nav-item active' : 'nav-item'">
+            <a class="nav-link" th:href="@{/users}">
                 <i class="fas fa-user"></i>
                 <span>[[#{users}]]</span>
             </a>

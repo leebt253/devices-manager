@@ -1,8 +1,9 @@
-package net.posco.entities;
+package net.posco.device;
 
 import java.util.List;
 
 import jakarta.persistence.*;
+import net.posco.history.History;
 
 @Entity
 @Table(name = "devices")

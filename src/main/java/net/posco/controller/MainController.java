@@ -1,4 +1,4 @@
-package net.posco.controllers;
+package net.posco.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

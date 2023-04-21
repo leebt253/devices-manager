@@ -1,8 +1,9 @@
-package net.posco.entities;
+package net.posco.user;
 
 import java.util.List;
 
 import jakarta.persistence.*;
+import net.posco.history.History;
 
 @Entity
 @Table(name = "users")
@@ -117,5 +118,17 @@ public class User {
     public void setHistories(List<History> histories) {
         this.histories = histories;
     }
-    
+
+    @Transient
+	public String getPhotoImagePath() {
+		if (id == null || picture == null) {
+			return "/img/profile-picture/default/default.jpg";
+		}			
+		return "/upload/picture/user/profile-picture/" + this.id + "/" + this.picture;
+	}
+
+	@Transient
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
 }

@@ -1,6 +1,8 @@
-package net.posco.entities;
+package net.posco.history;
 
 import jakarta.persistence.*;
+import net.posco.device.Device;
+import net.posco.user.User;
 
 @Entity
 @Table(name = "histories")

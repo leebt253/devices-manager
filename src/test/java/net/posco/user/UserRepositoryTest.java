@@ -1,8 +1,7 @@
 package net.posco.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import net.posco.entities.User;
-import net.posco.repositories.UserRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
