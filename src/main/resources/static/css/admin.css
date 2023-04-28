@@ -1981,6 +1981,32 @@ body.sidebar-toggled footer.sticky-footer {
   z-index: -1;
 }
 
+.header-login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  z-index: 99;
+}
+
+input[readonly]{
+  pointer-events: none;
+}
+
+.custom-input-button {
+  position: absolute;
+  right: 3px; 
+  top: 20%;
+  border: 0;
+  outline: none;
+  margin: 0;
+  padding: 0 10px;
+}
+
 @media screen and (max-width: 768px) {
   /* small screen */
   div.full-details {display: none;}

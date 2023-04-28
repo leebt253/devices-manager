@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<title>400</title>
+<link th:href="@{/css/error.css}" rel="stylesheet" />
+<article>
+    <h1 class="small">400</h1>
+    <h2>[[#{error.400.title}]]</h2>
+    <div>
+        <p>[[#{error.400.message}]]</p>
+        <a th:href="@{/}">&larr; [[#{goToHomepage}]]</a>
+    </div>
+</article>

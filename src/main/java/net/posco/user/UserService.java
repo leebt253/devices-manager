@@ -1,5 +1,6 @@
 package net.posco.user;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,6 +23,10 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	public User getByEmail (String email) {
+		return userRepository.getUserByEmail(email);
+	}
 
 	public List<User> listAll() {
 		return (List<User>) userRepository.findAll();
@@ -55,10 +60,14 @@ public class UserService {
 	// Save user information
 	public User save(User user) {
 		boolean isUpdatingUser = (user.getId() != null);
+		LocalDateTime dateCreated = LocalDateTime.now();
+        LocalDateTime dateModified = LocalDateTime.now();
 
 		// Check if user is existing
 		if (isUpdatingUser) {
 			User existingUser = userRepository.findById(user.getId()).get();
+			user.setDateCreated(existingUser.getDateCreated());
+			user.setDateModified(dateModified);
 			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
 			} else {
@@ -66,10 +75,27 @@ public class UserService {
 				encodePassword(user);
 			}
 		} else {
+			user.setDateCreated(dateCreated);
+			user.setDateModified(dateModified);
 			System.out.println("Password is: " + user.getPassword());
 			encodePassword(user);
 		}
 		return userRepository.save(user);
+	}
+
+	// Update user profile information
+	public User updateProfile(User userInForm) {
+		User userInDB = userRepository.findById(userInForm.getId()).get();
+		LocalDateTime dateModified = LocalDateTime.now();
+		if (!userInForm.getPassword().isEmpty()) {
+			userInDB.setPassword(userInForm.getPassword());
+			encodePassword(userInDB);
+		} 
+		if (userInForm.getPicture() != null) {
+			userInDB.setPicture(userInForm.getPicture());
+		}
+		userInDB.setDateModified(dateModified);
+		return userRepository.save(userInDB);
 	}
 
 	// Encode the password

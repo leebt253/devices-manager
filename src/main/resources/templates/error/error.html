@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
+    <title>503</title>
+    <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/admin.css}" rel="stylesheet" />
+    <link th:href="@{/css/error.css}" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar Start -->
+        <ul th:replace="~{sidebar :: sidebar}">
+        </ul>
+        <!-- Sidebar End -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar Start -->
+                <nav th:replace="~{topbar :: topbar}">
+                </nav>
+                <!-- Topbar End -->
+
+                <!-- Container Fluid Start -->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/}" style="font-size: 16px">[[#{home}]]</a></li>
+                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">
+                                [[#{error}]]
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Content Start -->
+                    <div class="text-center">
+                        <h1 class="text-gray-800 font-weight-bold" style="font-size: 6rem;">[[#{error}]]</h1>
+                        <h2 class="lead text-gray-800 mx-auto" style="font-size: 2rem;">[[#{error.500.title}]]</h2>
+                        <p style="font-size: 1.2rem;">[[#{error.500.message}]]</p>
+                        <a th:href="@{/}">&larr; [[#{goToHomepage}]]</a>
+                    </div>
+                    <!-- Content End -->
+
+                    <!-- Modal Logout -->
+                    <div th:replace="~{modal :: logoutModal}"></div>
+
+                </div>
+                <!-- Container Fluid End -->
+            </div>
+            <!-- Footer Start -->
+            <footer th:replace="~{footer :: footer}"> </footer>
+            <!-- Footer End -->
+        </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i> </a>
+
+    <script th:src="@{/vendor/jquery/jquery.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+
+</html>

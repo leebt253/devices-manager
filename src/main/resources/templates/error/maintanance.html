@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<title>Oops!</title>
+<link th:href="@{/css/error.css}" rel="stylesheet" />
+<article>
+    <h2>[[#{error.maintenance.title}]]</h2>
+    <div>
+        <p>[[#{error.maintanance.message}]]</p>
+        <a th:href="@{/}">&larr; [[#{goToHomepage}]]</a>
+    </div>
+</article>

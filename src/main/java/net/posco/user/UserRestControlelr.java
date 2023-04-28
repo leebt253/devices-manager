@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserRestControlelr {
-    @Autowired
+	@Autowired
 	private UserService userService;
-	
+
 	@PostMapping("/users/check_email")
 	public String checkExistEmail(@Param("id") Integer id, @Param("email") String email) {
 		return userService.isEmailUnique(id, email) ? "Email OK" : "Email is existed";
 	}
-	
+
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="utf-8" />
@@ -10,20 +10,66 @@
     <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
     <title>[[#{users}]]</title>
     <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/css/admin.bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
 </head>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar Start -->
-        <ul th:replace="~{sidebar :: sidebar}">
-        </ul>
+        <ul th:replace="~{sidebar :: sidebar}"></ul>
         <!-- Sidebar End -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar Start -->
-                <nav th:replace="~{topbar :: topbar}">
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3 text-gray-700">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Language Selector Start -->
+                        <li class="nav-item dropdown">
+                            <form id="frmLang" th:action="@{/lang}" method="post">
+                                <a class="nav-link dropdown-toggle text-gray-800" href="#" id="languageDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-globe fa-fw"></i>
+                                    <span class="text-gray-800 text-uppercase" style="padding-left: 4px"
+                                        id="selectedLanguage" th:text="${#locale.language}"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="languageDropdown">
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{'?lang=en&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                                        <img th:src="@{/img/flags/us.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.eng}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'en'}"></i>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{'?lang=vi&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                                        <img th:src="@{/img/flags/vi.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.vie}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'vi'}"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </form>
+                        </li>
+                        <!-- Language Selector End -->
+
+                        <!-- Notification Start -->
+                        <li th:replace="~{topbar :: notification}">
+                        </li>
+                        <!-- Notification End -->
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Profile Start -->
+                        <li th:replace="~{topbar :: profile}"></li>
+                        <!-- Profile End -->
+                    </ul>
                 </nav>
                 <!-- Topbar End -->
 
@@ -31,8 +77,12 @@
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./" style="font-size: 16px">[[#{home}]]</a></li>
-                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">[[#{users}]]
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/}" style="font-size: 16px">[[#{home}]]</a>
+                            </li>
+                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">
+                                [[#{users}]]
+                            </li>
                         </ol>
                     </div>
 
@@ -42,16 +92,16 @@
                             <div class="card mb-4">
                                 <div class="card-header py-4">
                                     <h6 style="float: left"></h6>
-                                    <h6 class="m-0" style="float: right;">
+                                    <h6 class="m-0" style="float: right">
                                         <a th:href="@{/users/new}" data-toggle="tooltip" title="Add new user">
                                             <img th:src="@{/img/add-user.png}" class="w-2 h-2" /></a>
                                         <a class="ml-4" data-toggle="tooltip" title="Export to Excel"
                                             th:href="@{/users/export/excel}">
-                                            <img th:src="@{/img/excel.png}" class="w-2 h-2"></a>
+                                            <img th:src="@{/img/excel.png}" class="w-2 h-2" /></a>
 
                                         <a class="ml-4" data-toggle="tooltip" title="Export to PDF"
                                             th:href="@{/users/export/pdf}">
-                                            <img th:src="@{/img/pdf.png}" class="w-2 h-2"></a>
+                                            <img th:src="@{/img/pdf.png}" class="w-2 h-2" /></a>
                                     </h6>
                                 </div>
                                 <div class="row gutters">
@@ -59,21 +109,21 @@
                                         <div class="form-group">
                                             <form th:action="@{/users/page/1}" id="frmSearch">
                                                 <div class="form-row align-items-center mb-2 ml-3">
-                                                    <div class="col-auto my-1">
-                                                        [[#{search}]]
-                                                    </div>
+                                                    <div class="col-auto my-1">[[#{search}]]</div>
                                                     <div class="col-xl-4 col-lg-6 col-md-8 col-sm-8 col mr-3">
                                                         <div class="input-group">
-                                                            <input type="hidden" name="pageSize" th:value="${pageSize}">
+                                                            <input type="hidden" name="pageSize"
+                                                                th:value="${pageSize}" />
                                                             <input type="hidden" name="sortField"
-                                                                th:value="${sortField}">
+                                                                th:value="${sortField}" />
                                                             <input type="hidden" name="sortDirection"
-                                                                th:value="${sortDirection}">
+                                                                th:value="${sortDirection}" />
                                                             <input type="search"
                                                                 class="form-control form-control-sm border-1 small"
                                                                 aria-label="Search" aria-describedby="basic-addon2"
                                                                 th:attr="placeholder=#{placeholder.search}" id="keyword"
-                                                                name="keyword" th:value="${keyword}" autocomplete="off">
+                                                                name="keyword" th:value="${keyword}"
+                                                                autocomplete="off" />
                                                             <div class="input-group-append">
                                                                 <button type="button" value="Search"
                                                                     class="btn btn-sm btn-primary"
@@ -92,41 +142,48 @@
                                         <div class="form-group">
                                             <form th:action="@{/users/page/1}" id="frmPageSize">
                                                 <input type="hidden" id="pageSize" name="pageSize"
-                                                    th:value="${pageSize}">
-                                                <input type="hidden" name="sortField" th:value="${sortField}">
-                                                <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+                                                    th:value="${pageSize}" />
+                                                <input type="hidden" name="sortField" th:value="${sortField}" />
+                                                <input type="hidden" name="sortDirection" th:value="${sortDirection}" />
                                                 <div class="form-row align-items-center justify-content-end mb-2 mr-3">
-                                                    <div class="col-auto my-1">[[#{show}]] </div>
+                                                    <div class="col-auto my-1">[[#{show}]]</div>
                                                     <div class="col-auto my-1">
                                                         <select class="form-control form-control-sm" style="width: 70px"
                                                             id="selectPageSize" onchange="setPageSize()">
-                                                            <option th:selected="${pageSize == 5}" value="5">5
+                                                            <option th:selected="${pageSize == 5}" value="5">
+                                                                5
                                                             </option>
-                                                            <option th:selected="${pageSize == 10}" value="10">10
+                                                            <option th:selected="${pageSize == 10}" value="10">
+                                                                10
                                                             </option>
-                                                            <option th:selected="${pageSize == 20}" value="20">20
+                                                            <option th:selected="${pageSize == 20}" value="20">
+                                                                20
                                                             </option>
-                                                            <option th:selected="${pageSize == 50}" value="50">50
+                                                            <option th:selected="${pageSize == 50}" value="50">
+                                                                50
                                                             </option>
-                                                            <option th:selected="${pageSize == 100}" value="100">100
+                                                            <option th:selected="${pageSize == 100}" value="100">
+                                                                100
                                                             </option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-auto my-1"> [[#{entries}]]</div>
+                                                    <div class="col-auto my-1">[[#{entries}]]</div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive p-3" style="margin-top: -1.25rem;">
+                                <div class="table-responsive p-3" style="margin-top: -1.25rem">
                                     <div class="alert alert-success" role="alert" th:if="${message != null}">
-                                        <button type="button" class="close" data-dismiss="alert"
-                                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                         [[${message}]]
                                     </div>
                                     <div class="alert alert-danger" role="alert" th:if="${warning != null}">
-                                        <button type="button" class="close" data-dismiss="alert"
-                                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                         [[${warning}]]
                                     </div>
                                     <div class="full-details">
@@ -134,21 +191,21 @@
                                             <!-- add id="dataTable" to use search and paging function from javascript -->
                                             <thead class="thead-light">
                                                 <tr>
-                                                    <th style="width: 60px;"
+                                                    <th style="width: 60px"
                                                         th:replace="~{table :: column_link('id', 'ID')}"></th>
-                                                    <th style="width: 60px; text-align:center !important;"
-                                                        nowrap="nowrap"> [[#{picture}]]</th>
-                                                    <th th:replace="~{table :: column_link('email', #{email})}">
+                                                    <th style="width: 60px; text-align: center !important"
+                                                        nowrap="nowrap">
+                                                        [[#{picture}]]
                                                     </th>
                                                     <th th:replace="~{table :: column_link('firstName', #{firstName})}">
                                                     </th>
                                                     <th th:replace="~{table :: column_link('lastName', #{lastName})}">
                                                     </th>
-                                                    <th th:replace="~{table :: column_link('role', #{role})}"> </th>
-                                                    <th style="width: 60px; text-align:center !important;"
-                                                        th:replace="~{table :: column_link('enabled', #{status})}">
-                                                    </th>
-                                                    <th style="pointer-events: none; width: 130px;" nowrap="nowrap">
+                                                    <th th:replace="~{table :: column_link('email', #{email})}"></th>
+                                                    <th th:replace="~{table :: column_link('role', #{role})}"></th>
+                                                    <th style="width: 60px; text-align: center !important"
+                                                        th:replace="~{table :: column_link('enabled', #{status})}"></th>
+                                                    <th style="pointer-events: none; width: 130px" nowrap="nowrap">
                                                         <span class="ml-4"></span>
                                                     </th>
                                                 </tr>
@@ -156,19 +213,22 @@
                                             <tbody>
                                                 <tr th:each="user: ${listUsers}"
                                                     th:ondblclick="'javascript:rowClicked(\'' + ${user.id} + '\', \'' + ${currentPage} + '\');'">
-                                                    <td style="width: 60px;" nowrap="nowrap">[[${user.id}]]</td>
-                                                    <td><img class="rounded border border-dark" style="max-width: 60px"
+                                                    <td style="width: 60px" nowrap="nowrap">
+                                                        [[${user.id}]]
+                                                    </td>
+                                                    <td>
+                                                        <img class="rounded border border-dark" style="max-width: 60px"
                                                             alt="" th:if="${user.picture} == null"
-                                                            th:src="@{/img/user-default.jpg}" />
+                                                            th:src="@{/img/user_default.jpg}" />
                                                         <img class="rounded border border-dark" style="max-width: 60px"
                                                             alt="" th:if="${user.picture} != null"
                                                             th:src="@{${user.photoImagePath}}" />
                                                     </td>
-                                                    <td nowrap="nowrap">[[${user.email}]]</td>
                                                     <td>[[${user.firstName}]]</td>
                                                     <td>[[${user.lastName}]]</td>
+                                                    <td nowrap="nowrap">[[${user.email}]]</td>
                                                     <td><label th:text="${user.role}"></label></td>
-                                                    <td style="width: 60px; text-align:center !important;">
+                                                    <td style="width: 60px; text-align: center !important">
                                                         <a th:if="${user.enabled == true}"
                                                             class="fas fa-check-circle text-success"
                                                             th:attr="title=#{tooltip.disable}"
@@ -184,7 +244,7 @@
                                                             th:href="@{'/users/edit/' + ${user.id} + '/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}"></a>
                                                         <a class="fas fa-trash-alt text-gray-700 ml-4 link-delete"
                                                             th:attr="title=#{tooltip.delete}" th:userId="${user.id}"
-                                                            th:userName="${user.firstName} + ' ' + ${user.lastName}"
+                                                            th:userName="${user.lastName} + ' ' + ${user.firstName}"
                                                             th:href="@{'/users/delete/' + ${user.id} + '/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}"></a>
                                                     </td>
                                                 </tr>
@@ -196,7 +256,7 @@
                                         <div class="row py-2" th:each="user: ${listUsers}">
                                             <div class="col-4">
                                                 <img class="rounded border border-dark" style="max-width: 80px" alt=""
-                                                    th:if="${user.picture} == null" th:src="@{/img/user-default.jpg}" />
+                                                    th:if="${user.picture} == null" th:src="@{/img/.jpg}" />
                                                 <img class="rounded border border-dark" style="max-width: 80px" alt=""
                                                     th:if="${user.picture} != null"
                                                     th:src="@{${user.photoImagePath}}" />
@@ -220,24 +280,22 @@
 
                                                     <a class="fas fa-trash-alt text-gray-700 ml-3 link-delete"
                                                         th:attr="title=#{tooltip.delete}" th:userId="${user.id}"
-                                                        th:userName="${user.firstName} + ' ' + ${user.lastName}"
+                                                        th:userName="${user.lastName} + ' ' + ${user.firstName}"
                                                         th:href="@{'/users/delete/' + ${user.id} + '/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}"></a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="text-center mt-4 mb-5" th:unless="${totalItems > 0}">
                                     <span>[[#{userNotFound}]].</span>
                                 </div>
                                 <div class="text-center mt-3" th:if="${totalItems > 0}">
-                                    <span>[[#{showing}]] [[${startCount}]] [[#{to}]] [[${endCount}]] [[#{of}]]
-                                        [[${totalItems}]]
+                                    <span>[[#{showing}]] [[${startCount}]] [[#{to}]]
+                                        [[${endCount}]] [[#{of}]] [[${totalItems}]]
                                         [[#{entries}]].</span>
                                 </div>
                                 <div class="text-center mt-2 mb-3" th:if="${totalItems > 0}">
-
                                     <nav>
                                         <ul class="pagination justify-content-center flex-wrap pl-5 pr-5">
                                             <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
@@ -256,7 +314,6 @@
                                                 </li>
                                             </th:block>
                                             <th:block th:if="${totalPages > 6}">
-
                                                 <th:block th:if="${currentPage <= 3 || currentPage >= totalPages - 2}">
                                                     <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                                                         th:each="i : ${#numbers.sequence(1, 3)}">
@@ -283,7 +340,6 @@
                                                     <a
                                                         th:replace="~{table :: page_link(${currentPage + 3}, '...')}"></a>
                                                 </th:block>
-
                                             </th:block>
                                             <li
                                                 th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
@@ -308,18 +364,19 @@
 
                     <!-- Modal Logout -->
                     <div th:replace="~{modal :: logoutModal}"></div>
-
                 </div>
                 <!-- Container Fluid End -->
             </div>
             <!-- Footer Start -->
-            <footer th:replace="~{footer :: footer}"> </footer>
+            <footer th:replace="~{footer :: footer}"></footer>
             <!-- Footer End -->
         </div>
     </div>
 
     <!-- Scroll to top -->
-    <a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i> </a>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
     <script th:src="@{/vendor/jquery/jquery.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
@@ -329,25 +386,32 @@
     <!-- Page level custom scripts -->
     <script>
         function urlReplace(str) {
-            return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-        };
+            return str
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">");
+        }
 
         function rowClicked(id, currentPage) {
-            url = "[[@{'/users/edit/'}]]" + id + "/"
-                + "[[@{'page/'}]]" + currentPage
-                + "[[@{'?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}]]";
+            url =
+                "[[@{'/users/edit/'}]]" +
+                id +
+                "/" +
+                "[[@{'page/'}]]" +
+                currentPage +
+                "[[@{'?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}]]";
             strEncode = urlReplace(url);
             location.href = strEncode;
-        };
+        }
 
         function checkEmptyKeyword() {
             keyword = $("#keyword").val();
-            if (keyword == '') {
+            if (keyword == "") {
                 window.location = "[[@{/users}]]";
             } else {
-                document.getElementById('frmSearch').submit();
+                document.getElementById("frmSearch").submit();
             }
-        };
+        }
     </script>
 </body>
 

@@ -1,5 +1,7 @@
 package net.posco.history;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import net.posco.device.Device;
 import net.posco.user.User;
@@ -17,27 +19,35 @@ public class History {
     @Column(nullable = true)
     private Integer outQuantity;
 
-    @Column(length = 32, nullable = false)
-    private String date;
+    @Column(length = 255, nullable = true)
+    private String remark;
+
+    @Column(columnDefinition = "DateTime", nullable = false)
+    private LocalDateTime dateCreated;
+
+    @Column(columnDefinition = "DateTime", nullable = false)
+    private LocalDateTime dateModified;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
+
     @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
 
     public History() {
-
     }
 
-    public History(User user, Device device, Integer inQuantity, Integer outQuantity, String date) {
-        this.user = user;
-        this.device = device;
+    public History(Integer inQuantity, Integer outQuantity, String remark, LocalDateTime dateCreated,
+            LocalDateTime dateModified, User user, Device device) {
         this.inQuantity = inQuantity;
         this.outQuantity = outQuantity;
-        this.date = date;
+        this.remark = remark;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
+        this.user = user;
+        this.device = device;
     }
 
     public Integer getId() {
@@ -80,11 +90,27 @@ public class History {
         this.outQuantity = outQuantity;
     }
 
-    public String getDate() {
-        return date;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public LocalDateTime getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
     }
 }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<title>503</title>
+<link th:href="@{/css/error.css}" rel="stylesheet" />
+<article>
+    <h1 class="small">503</h1>
+    <h2>[[#{error.503.title}]]</h2>
+    <div>
+        <p>[[#{error.503.message}]]</p>
+        <a th:href="@{/}">&larr; [[#{goToHomepage}]]</a>
+    </div>
+</article>

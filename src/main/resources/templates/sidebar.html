@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -21,38 +21,45 @@
             </a></li>
         <hr class="sidebar-divider" />
         <div class="sidebar-heading">[[#{features}]]</div>
-        <li th:class="${#strings.equals(pageTitle,'users') 
+        <th:block sec:authorize="hasAuthority('Admin')">
+            <li th:class="${#strings.equals(pageTitle,'users') 
                         OR #strings.equals(pageTitle,'Add new user') 
-                        OR #strings.equals(pageTitle,'Edit user')} ? 'nav-item active' : 'nav-item'">
-            <a class="nav-link" th:href="@{/users}">
-                <i class="fas fa-user"></i>
-                <span>[[#{users}]]</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-plug"></i>
-                <span>[[#{devices}]]</span>
-            </a>
-        </li>
-        <hr class="sidebar-divider" />
-        <div class="sidebar-heading">[[#{reports}]]</div>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-list-alt"></i>
-                <span>[[#{history}]]</span>
-            </a>
-        </li>
-        <hr class="sidebar-divider" />
-        <div class="sidebar-heading">[[#{others}]]</div>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-cog"></i>
-                <span>[[#{settings}]]</span>
-            </a>
-        </li>
-        <hr class="sidebar-divider" />
-        <div class="version" id="dashboard-version"></div>
+                        OR #strings.equals(pageTitle,'Edit user')} ? 'nav-item active' : 'nav-item'"
+                >
+                <a class="nav-link" th:href="@{/users}">
+                    <i class="fas fa-user"></i>
+                    <span>[[#{users}]]</span>
+                </a>
+            </li>
+        </th:block>
+        <th:block sec:authorize="hasAnyAuthority('Admin', 'User')">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-plug"></i>
+                    <span>[[#{devices}]]</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider" />
+            <div class="sidebar-heading">[[#{reports}]]</div>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-list-alt"></i>
+                    <span>[[#{history}]]</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider" />
+        </th:block>
+        <th:block sec:authorize="hasAuthority('Admin')">
+            <div class="sidebar-heading">[[#{others}]]</div>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cog"></i>
+                    <span>[[#{settings}]]</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider" />
+        </th:block>
+        <!-- <div class="version" id="dashboard-version">version 1.0</div> -->
     </ul>
     <!-- Sidebar End -->
 </body>

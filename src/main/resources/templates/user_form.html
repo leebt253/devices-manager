@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link th:href="@{/img/logo/favicon.ico}" rel="icon">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
     <title th:if="${pageTitle} == 'Add new user'">[[#{userNew}]]</title>
     <title th:if="${pageTitle} == 'Edit user'">[[#{userEdit}]]</title>
     <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/css/admin.bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
 </head>
 
@@ -23,30 +23,82 @@
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-
                 <!-- TopBar Start -->
-                <ul th:replace="~{topbar :: topbar}"></ul>
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3 text-gray-700">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Language Selector Start -->
+                        <li class="nav-item dropdown">
+                            <form id="frmLang" th:action="@{/lang}" method="post">
+                                <a class="nav-link dropdown-toggle text-gray-800" href="#" id="languageDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-globe fa-fw"></i>
+                                    <span class="text-gray-800 text-uppercase" style="padding-left: 4px"
+                                        id="selectedLanguage" th:text="${#locale.language}"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="languageDropdown">
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{'?lang=en&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                                        <img th:src="@{/img/flags/us.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.eng}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'en'}"></i>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{'?lang=vi&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                                        <img th:src="@{/img/flags/vi.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.vie}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'vi'}"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </form>
+                        </li>
+                        <!-- Language Selector End -->
+
+                        <!-- Notification Start -->
+                        <li th:replace="~{topbar :: notification}">
+                        </li>
+                        <!-- Notification End -->
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Profile Start -->
+                        <li th:replace="~{topbar :: profile}"></li>
+                        <!-- Profile End -->
+                    </ul>
+                </nav>
                 <!-- Topbar End -->
 
                 <!-- Container Fluid Start -->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}" style="font-size: 14px;">[[#{home}]]</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/users}" style="font-size: 14px;">[[#{users}]]</a>
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/}" style="font-size: 14px">[[#{home}]]</a>
                             </li>
-                            <li class="breadcrumb-item active" style="font-size: 14px;" aria-current="page"
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/users}" style="font-size: 14px">[[#{users}]]</a>
+                            </li>
+                            <li class="breadcrumb-item active" style="font-size: 14px" aria-current="page"
                                 th:if="${pageTitle} == 'Add new user'">
-                                [[#{userNew}]]</li>
-                            <li class="breadcrumb-item active" style="font-size: 14px;" aria-current="page"
+                                [[#{userNew}]]
+                            </li>
+                            <li class="breadcrumb-item active" style="font-size: 14px" aria-current="page"
                                 th:if="${pageTitle} == 'Edit user'">
-                                [[#{userEdit}]]</li>
+                                [[#{userEdit}]]
+                            </li>
                         </ol>
                     </div>
 
                     <!-- Form Start -->
                     <form id="frmUser" th:action="@{/users/save}" method="post" enctype="multipart/form-data"
-                        th:object="${user}" onsubmit="return validateForm(this)">
+                        th:object="${user}" onsubmit="return validateUserForm(this)">
                         <input type="hidden" th:field="*{id}" />
                         <div class="container">
                             <div class="row gutters">
@@ -60,7 +112,7 @@
                                                         <img id="thumbnail" class="rounded border border-dark pt-1"
                                                             alt="Photo preview" style="max-width: 140px"
                                                             th:if="${user.picture} == null"
-                                                            th:src="@{/img/user-default.jpg}" />
+                                                            th:src="@{/img/user_default.jpg}" />
                                                         <img id="thumbnail" class="rounded border border-dark pt-1"
                                                             alt="Photo preview" style="max-width: 140px"
                                                             th:if="${user.picture} != null"
@@ -85,8 +137,7 @@
                                                     <p th:text="'User ID: ' + ${user.id}" class="mb-0"></p>
                                                 </div>
                                                 <div class="d-flex mt-2 justify-content-center align-items-center"
-                                                    th:if="${user.id} != null">
-                                                </div>
+                                                    th:if="${user.id} != null"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +152,7 @@
                                                             [[#{firstName}]]</label>
                                                         <input type="text" class="form-control" id="firstName"
                                                             aria-describedby="firstNameHelp" placeholder=""
-                                                            th:field="*{firstName}">
+                                                            th:field="*{firstName}" />
                                                         <small id="firstNameHelp" class="form-text text-danger"></small>
                                                     </div>
                                                 </div>
@@ -111,38 +162,53 @@
                                                             [[#{lastName}]]</label>
                                                         <input type="text" class="form-control" id="lastName"
                                                             aria-describedby="lastNameHelp" placeholder=""
-                                                            th:field="*{lastName}">
+                                                            th:field="*{lastName}" />
                                                         <small id="lastNameHelp" class="form-text text-danger"></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
-                                                        <label><span class="text-danger">*</span> [[#{email}]]</label>
+                                                        <label><span class="text-danger">*</span>
+                                                            [[#{email}]]</label>
                                                         <input type="text" class="form-control" id="email"
                                                             aria-describedby="emailHelp" placeholder=""
-                                                            th:field="*{email}">
+                                                            th:field="*{email}" />
                                                         <small id="emailHelp" class="form-text text-danger"></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
                                                         <label><span class="text-danger">*</span>
-                                                            [[#{password}]]</label>
-                                                        <input type="password" class="form-control"
-                                                            placeholder="••••••••" th:field="*{password}">
-                                                        <small id="passwordHelp" class="form-text text-danger"></small>
+                                                            [[#{role}]]</label>
+                                                        <select class="form-control" th:field="*{role}">
+                                                            <option th:value="'User'"
+                                                                th:selected="${user.role == 'User'}">
+                                                                User
+                                                            </option>
+                                                            <option th:value="'Admin'"
+                                                                th:selected="${user.role == 'Admin'}">
+                                                                Admin
+                                                            </option>
+                                                        </select>
+                                                        <small id="roleHelp" class="form-text text-danger"></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
-                                                        <label><span class="text-danger">*</span> [[#{role}]]</label>
-                                                        <select class="form-control" th:field="*{role}">
-                                                            <option th:value="'User'"
-                                                                th:selected="${user.role == 'User'}">User</option>
-                                                            <option th:value="'Admin'"
-                                                                th:selected="${user.role == 'Admin'}">Admin</option>
-                                                        </select>
-                                                        <small id="roleHelp" class="form-text text-danger"></small>
+                                                        <label><span class="text-danger">*</span>
+                                                            [[#{password}]]</label>
+                                                        <!-- <input type="password" class="form-control"
+                                                            placeholder="••••••••" th:field="*{password}" /> -->
+                                                        <div class="input-group" id="show_hide_password">
+                                                            <input type="password" class="form-control"
+                                                                autocomplete="new-password" placeholder="••••••••"
+                                                                th:field="*{password}" />
+                                                            <div class="input-group-addon custom-input-button">
+                                                                <a href=""><i class="fa fa-eye-slash"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <small id="passwordHelp" class="form-text text-danger"></small>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -150,8 +216,9 @@
                                                         <label></label>
                                                         <div class="mb-2">
                                                             <input type="checkbox" class="mr-1"
-                                                                style="vertical-align: middle; position: relative; bottom: .08em;"
-                                                                th:field="*{enabled}" /> [[#{setActive}]]
+                                                                style="
+                                                                vertical-align: middle; position: relative; bottom: 0.08em;" th:field="*{enabled}" />
+                                                            [[#{setActive}]]
                                                         </div>
                                                     </div>
                                                 </div>
@@ -162,19 +229,20 @@
                                                         <br />
                                                         <hr />
                                                         <button type="submit" id="btnSave" value="Save"
-                                                            class="btn btn-primary" style="width: 80px !important;">
-                                                            Save
+                                                            class="btn btn-primary" style="width: 80px !important">
+                                                            [[#{save}]]
                                                         </button>
                                                         <a type="button" id="btnCancel" value="Cancel"
                                                             class="btn btn-outline-danger ml-2"
-                                                            style="width: 80px !important;" th:if="${user.id} == null"
-                                                            th:href="@{/users}">Cancel</a>
+                                                            style="width: 80px !important" th:if="${user.id} == null"
+                                                            th:href="@{/users}">[[#{cancel}]]</a>
                                                         <a type="button" id="btnCancel" value="Cancel"
                                                             class="btn btn-outline-danger ml-2"
-                                                            style="width: 80px !important;" th:if="${user.id} != null"
-                                                            th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}">Cancel</a>
-                                                        <a th:href="@{/users/new}" data-toggle="tooltip"
-                                                            title="Add new user" class="mt-2 mr-2" style="float: right;">
+                                                            style="width: 80px !important" th:if="${user.id} != null"
+                                                            th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}">[[#{cancel}]]</a>
+                                                        <a th:href="@{/users/new}" th:if="${pageTitle} == 'Edit user'"
+                                                            data-toggle="tooltip" title="Add new user" class="mt-2 mr-2"
+                                                            style="float: right">
                                                             <img th:src="@{/img/add-user.png}" class="w-2 h-2" /></a>
                                                     </div>
                                                 </div>
@@ -192,20 +260,19 @@
 
                     <!-- Modal Logout -->
                     <div th:replace="~{modal :: logoutModal}"></div>
-
                 </div>
                 <!-- Container Fluid End -->
             </div>
 
             <!-- Footer Start -->
-            <footer th:replace="~{footer :: footer}"> </footer>
+            <footer th:replace="~{footer :: footer}"></footer>
             <!-- Footer End -->
-
         </div>
     </div>
 
     <!-- Scroll to top -->
-    <a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
     </a>
 
     <script th:src="@{/vendor/jquery/jquery.js}"></script>
@@ -216,13 +283,13 @@
     <!-- Page level plugins -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var nameMsg = /*[[#{validation.name}]]*/ 'default';
-        var emailMsg = /*[[#{validation.email}]]*/ 'default';
-        var existedEmailMsg = /*[[#{validation.existedEmail}]]*/ 'default';
-        var phoneMsg = /*[[#{validation.phone}]]*/ 'default';
-        var passwordMsg = /*[[#{validation.password}]]*/ 'default';
-        var passwordMatchMsg = /*[[#{validation.passwordMatch}]]*/ 'default';
-		/*]]>*/
+        var nameMsg = /*[[#{validation.name}]]*/ "default";
+        var emailMsg = /*[[#{validation.email}]]*/ "default";
+        var existedEmailMsg = /*[[#{validation.existedEmail}]]*/ "default";
+        var phoneMsg = /*[[#{validation.phone}]]*/ "default";
+        var passwordMsg = /*[[#{validation.password}]]*/ "default";
+        var passwordMatchMsg = /*[[#{validation.passwordMatch}]]*/ "default";
+      /*]]>*/
     </script>
 </body>
 

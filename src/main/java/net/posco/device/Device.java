@@ -1,5 +1,6 @@
 package net.posco.device;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -42,14 +43,21 @@ public class Device {
     @Column(length = 255, nullable = false)
     private String remark;
 
+    @Column(columnDefinition = "DateTime", nullable = false)
+    private LocalDateTime dateCreated;
+
+    @Column(columnDefinition = "DateTime", nullable = false)
+    private LocalDateTime dateModified;
+
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<History> histories;
 
     public Device() {
-
     }
 
-    public Device(String itemGroup, String itemCode, String deviceName, String deviceModel, String serialNumber, String department, Integer quantity, Integer min, Integer max, String remark) {
+    public Device(String itemGroup, String itemCode, String deviceName, String deviceModel, String serialNumber,
+            String department, Integer quantity, Integer min, Integer max, String remark, LocalDateTime dateCreated,
+            LocalDateTime dateModified) {
         this.itemGroup = itemGroup;
         this.itemCode = itemCode;
         this.deviceName = deviceName;
@@ -60,6 +68,8 @@ public class Device {
         this.min = min;
         this.max = max;
         this.remark = remark;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
     }
 
     public Integer getId() {
@@ -148,6 +158,22 @@ public class Device {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public LocalDateTime getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
     }
 
     public List<History> getHistories() {

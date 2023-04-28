@@ -10,9 +10,8 @@
     <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
     <title>[[#{dashboard}]]</title>
     <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/css/admin.bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/admin.css}" rel="stylesheet" />
-    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" rel="stylesheet" />
 </head>
 
 <body id="page-top">
@@ -24,7 +23,54 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar Start -->
-                <nav th:replace="~{topbar :: topbar}">
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3 text-gray-700">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Language Selector Start -->
+                        <li class="nav-item dropdown">
+                            <form id="frmLang" th:action="@{/lang}" method="post">
+                                <a class="nav-link dropdown-toggle text-gray-800" href="#" id="languageDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-globe fa-fw"></i>
+                                    <span class="text-gray-800 text-uppercase" style="padding-left: 4px"
+                                        id="selectedLanguage" th:text="${#locale.language}"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="languageDropdown">
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{?lang=en}">
+                                        <img th:src="@{/img/flags/us.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.eng}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'en'}"></i>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item cookier"
+                                        th:href="@{?lang=vi}">
+                                        <img th:src="@{/img/flags/vi.png}" style="padding-right: 2px" />
+                                        <span class="py-2">[[#{lang.vie}]]
+                                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                                th:if="${#locale.language == 'vi'}"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </form>
+                        </li>
+                        <!-- Language Selector End -->
+                        
+                        <!-- Notification Start -->
+                        <li th:replace="~{topbar :: notification}">
+                        </li>
+                        <!-- Notification End -->
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Profile Start -->
+                        <li th:replace="~{topbar :: profile}"></li>
+                        <!-- Profile End -->
+                    </ul>
                 </nav>
                 <!-- Topbar End -->
 
@@ -32,8 +78,9 @@
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./" style="font-size: 16px">[[#{home}]]</a></li>
-                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">[[#{dashboard}]]
+                            <li class="breadcrumb-item"><a th:href="@{/}" style="font-size: 16px">[[#{home}]]</a></li>
+                            <li class="breadcrumb-item active" style="font-size: 16px" aria-current="page">
+                                [[#{dashboard}]]
                             </li>
                         </ol>
                     </div>
@@ -41,21 +88,20 @@
                     <!-- Card Example End Start -->
                     <div class="row mb-3">
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                                Earnings (Monthly)
+                                                Total import value
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 $40,000
                                             </div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 <span class="text-success mr-2"><i class="fa fa-arrow-up"></i>
-                                                    3.48%</span> <span>Since last
-                                                    month</span>
+                                                    3.48%</span> <b><span id="month"></span></b>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -64,9 +110,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- Earnings (Annual) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -89,9 +135,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- New User Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -114,9 +160,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -138,27 +184,27 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- Card Example End -->
 
                     <!-- Datatables Start -->
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-12">
                             <div class="card mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Contents</h6>
                                 </div>
-                                <div class="table-responsive p-3" style="margin-top: -1.25rem">                                    
+                                <div class="table-responsive p-3" style="margin-top: -1.25rem">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Datatables End -->
 
-					<!-- Modal Logout -->
-					<div th:replace="~{modal :: logoutModal}"></div>
+                    <!-- Modal Logout -->
+                    <div th:replace="~{modal :: logoutModal}"></div>
 
                 </div>
                 <!-- Container Fluid End -->
@@ -176,6 +222,15 @@
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
     <script th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
     <script th:src="@{/js/admin.js}"></script>
+    <script th:src="@{/js/user.js}"></script>
+    <script>
+        $(document).ready(function () {
+            var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var d = new Date();
+            var name = month[d.getMonth()];
+            document.getElementById("month").innerHTML = name + ' / ' + d.getFullYear();
+        });
+    </script>
 </body>
 
 </html>

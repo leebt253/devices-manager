@@ -1,4 +1,4 @@
-package net.posco.user;
+package net.posco.user.export;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +15,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 import jakarta.servlet.http.HttpServletResponse;
-
+import net.posco.user.User;
 import net.posco.util.AbstractExporter;
 
 public class UserPdfExporter extends AbstractExporter {
@@ -41,7 +41,7 @@ public class UserPdfExporter extends AbstractExporter {
         PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100f);
         table.setSpacingBefore(10);
-        table.setWidths(new float[] {1.0f, 4.0f, 3.0f, 3.0f, 2.0f, 2.0f});
+        table.setWidths(new float[] { 1.0f, 4.0f, 3.0f, 3.0f, 2.0f, 2.0f });
 
         writeTableHeader(table);
         writeTableData(table, listUsers);

@@ -16,7 +16,7 @@
         </span>
     </th>
 
-    <a class="page-link" th:fragment="page_link(pageNum, label)"  
+    <a class="page-link" th:fragment="page_link(pageNum, label)"
         th:href="@{'/users/page/' + ${pageNum} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
 </body>
 

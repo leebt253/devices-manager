@@ -1,4 +1,4 @@
-package net.posco.user;
+package net.posco.user.export;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import net.posco.user.User;
 import net.posco.util.AbstractExporter;
 
 import jakarta.servlet.ServletOutputStream;
@@ -22,12 +23,12 @@ public class UserExcelExporter extends AbstractExporter {
     private XSSFSheet sheet;
 
     public UserExcelExporter() {
-        workbook = new XSSFWorkbook();    
+        workbook = new XSSFWorkbook();
     }
 
     private void writeHeaderLine() {
         sheet = workbook.createSheet("Users");
-        XSSFRow row = sheet.createRow(0); 
+        XSSFRow row = sheet.createRow(0);
         XSSFCellStyle cellStyle = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
         font.setBold(true);
@@ -43,14 +44,12 @@ public class UserExcelExporter extends AbstractExporter {
 
     private void createCell(XSSFRow row, int columnIndex, Object value, CellStyle style) {
         XSSFCell cell = row.createCell(columnIndex);
-        //sheet.autoSizeColumn(columnIndex);
+        // sheet.autoSizeColumn(columnIndex);
         if (value instanceof Integer) {
             cell.setCellValue((Integer) value);
-        }
-        else if (value instanceof Boolean) {
+        } else if (value instanceof Boolean) {
             cell.setCellValue((Boolean) value);
-        }
-        else {
+        } else {
             cell.setCellValue((String) value);
         }
         cell.setCellStyle(style);
@@ -74,8 +73,10 @@ public class UserExcelExporter extends AbstractExporter {
             String role = user.getRole();
             Boolean enabled = user.isEnabled();
             String status;
-            if (enabled) status = "Enable";
-            else status = "Disable";
+            if (enabled)
+                status = "Enable";
+            else
+                status = "Disable";
             createCell(row, columnIndex++, id, cellStyle);
             sheet.autoSizeColumn(columnIndex - 1);
             createCell(row, columnIndex++, email, cellStyle);
@@ -90,7 +91,7 @@ public class UserExcelExporter extends AbstractExporter {
             sheet.autoSizeColumn(columnIndex - 1);
         }
     }
-    
+
     public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
         super.setResponseHeader(response, "Users_", ".application/octet-stream", ".xlsx");
         writeHeaderLine();

@@ -43,7 +43,7 @@ function showImageThumbnail(fileInput) {
     reader.readAsDataURL(file);
 }
 
-function validateForm(form) {
+function validateUserForm(form) {
     id = $("#id").val();
     firstName = $("#firstName").val();
     lastName = $("#lastName").val();
@@ -71,6 +71,19 @@ function validateForm(form) {
             else
                 alert("Unkown error!!!");
         });
+    }
+    return false;
+};
+
+function validateProfileForm(form) {
+    id = $("#id").val();
+    password = $("#password").val();
+    passwordConfirm = $("#confirmPassword").val();
+    error = "";
+    error += validatePassword(id, password);
+    error += validatePasswordMatch(password, passwordConfirm);
+    if (error === "") { 
+        form.submit(); 
     }
     return false;
 };
@@ -129,7 +142,7 @@ function validatePassword(id, password) {
             return "";
         }
     }
-    else if (id == "") {     
+    else if (id == "") {
         if (!pattern.test(password)) {
             document.getElementById("passwordHelp").innerHTML = passwordMsg;
             return "Invalid password";
@@ -141,13 +154,47 @@ function validatePassword(id, password) {
     }
 };
 
-// function validatePasswordMatch(password, passwordConfirm) {
-//     if (password != passwordConfirm) {
-//         document.getElementById("confirmPasswordHelp").innerHTML = passwordMatchMsg;
-//         return "Invalid password";
-//     }
-//     else {
-//         document.getElementById("confirmPasswordHelp").innerHTML = "";
-//         return "";
-//     }
-// };
+function validatePasswordMatch(password, passwordConfirm) {
+    if (password != passwordConfirm) {
+        document.getElementById("confirmPasswordHelp").innerHTML = passwordMatchMsg;
+        return "Invalid password";
+    }
+    else {
+        document.getElementById("confirmPasswordHelp").innerHTML = "";
+        return "";
+    }
+};
+
+$(document).ready(function () {
+    $('#logoutButton').on('click', function (e) {
+        e.preventDefault();
+        document.logoutForm.submit();
+    });
+});
+
+$(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+    $("#show_hide_confirm_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_confirm_password input').attr("type") == "text"){
+            $('#show_hide_confirm_password input').attr('type', 'password');
+            $('#show_hide_confirm_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_confirm_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_confirm_password input').attr("type") == "password"){
+            $('#show_hide_confirm_password input').attr('type', 'text');
+            $('#show_hide_confirm_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_confirm_password i').addClass( "fa-eye" );
+        }
+    });
+});

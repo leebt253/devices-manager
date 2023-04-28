@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link th:href="@{/img/logo/favicon.ico}" rel="icon" />
+    <title>[[#{login}]]</title>
+    <link th:href="@{/vendor/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/admin.css}" rel="stylesheet" />
+</head>
+
+<body class="bg-gradient-login">
+    <!-- Language Selector Start -->
+    <div class="header-login-page">
+        <nav class="navigation">
+            <form id="frmLang" th:action="@{/lang}" method="post">
+                <a class="nav-link dropdown-toggle text-gray-800" id="languageDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-globe fa-fw"></i>
+                    <span class="text-gray-800 text-uppercase" style="padding-left: 4px;" id="selectedLanguage"
+                        th:text="${#locale.language}"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item cookier" th:href="@{?lang=en}">
+                        <img th:src="@{/img/flags/us.png}" style="padding-right: 2px;">
+                        <span class="py-2">[[#{lang.eng}]]
+                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                th:if="${#locale.language == 'en'}"></i>
+                        </span>
+                    </a>
+                    <a class="dropdown-item cookier" th:href="@{?lang=vi}">
+                        <img th:src="@{/img/flags/vi.png}" style="padding-right: 2px;">
+                        <span class="py-2">[[#{lang.vie}]]
+                            <i id="langUsChecked" class="fas fa-check ml-3 text-gray-700"
+                                th:if="${#locale.language == 'vi'}"></i>
+                        </span>
+                    </a>
+                </div>
+            </form>
+        </nav>
+    </div>
+    <!-- Language Selector End -->
+
+    <!-- Login Content -->
+    <div class="container-login"
+        style="width: 90%;
+            position: fixed; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+        <div class="row justify-content-center">
+            <div class="card shadow-sm my-5" style="width: 26rem;">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="login-form">
+                                <div class="text-center">
+                                    <img th:src="@{/img/logo/logo.png}" style="width: 20%" />
+                                    <div class="sidebar-brand-text font-bold text-primary mt-3" style="font-size: 1rem">
+                                        [[#{app.title}]]</div>
+                                    <h1 class="h4 text-gray-800 m-4"><b>[[#{login}]]</b></h1>
+                                </div>
+                                <form th:action="@{/login}" method="post">
+                                    <!-- <div class="alert alert-success" role="alert" th:if="${param.logout}">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        [[#{logout.message}]].
+                                    </div> -->
+                                    <div th:if="${param.error}">
+                                        <p class="text-danger">[[#{loginFail}]].</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" id="email" name="email" class="form-control"
+                                            autocomplete="off" th:attr="placeholder=#{placeholder.email}" required
+                                            oninvalid="InvalidEmailMsg(this);" oninput="InvalidEmailMsg(this);" />
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- <input type="password" id="password" name="password" class="form-control"
+                                            th:attr="placeholder=#{placeholder.password}" required
+                                            oninvalid="InvalidPasswordMsg(this);" oninput="InvalidPasswordMsg(this);" /> -->
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" id="password" name="password" class="form-control custom-input-input"
+                                                th:attr="placeholder=#{placeholder.password}" required
+                                                oninvalid="InvalidPasswordMsg(this);"
+                                                oninput="InvalidPasswordMsg(this);" />
+                                            <div class="input-group-addon custom-input-button">
+                                                <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
+                                            <input type="checkbox" id="customCheck" name="remember-me"
+                                                class="custom-control-input">
+                                            <label class="custom-control-label"
+                                                for="customCheck">[[#{rememberMe}]]</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block">[[#{login}]]</button>
+                                    </div>
+                                </form>
+                                <div class="text-center">
+                                    <hr><a th:href="@{/construction}" class="">[[#{forgotPassword}]] ?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Content -->
+
+    <script th:src="@{/vendor/jquery/jquery.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+    <script th:src="@{/js/user.js}"></script>
+    <script>
+        function InvalidEmailMsg(textbox) {
+            if (textbox.value == '' || textbox.validity.typeMismatch) {
+                textbox.setCustomValidity('[[#{emailFail}]]');
+            }
+            else {
+                textbox.setCustomValidity('');
+            }
+            return true;
+        }
+        function InvalidPasswordMsg(textbox) {
+            if (textbox.value == '') {
+                textbox.setCustomValidity('[[#{passwordFail}]]');
+            }
+            else {
+                textbox.setCustomValidity('');
+            }
+            return true;
+        }
+    </script>
+</body>
+
+</html>
